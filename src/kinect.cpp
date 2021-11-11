@@ -28,10 +28,11 @@ void Kinect::update(){
         grayThreshFar = grayImage;
         grayThreshNear.threshold(nearThreshold, true);
         grayThreshFar.threshold(farThreshold);
-        cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
-
+        //cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
+        cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), colorImg.getCvImage(), NULL);
         grayImage.flagImageChanged();
-        grayImage.blurGaussian(3);
+        //grayImage.blurGaussian(3);
+        //grayImage.invert();
         colorImg = grayImage;
 
     }

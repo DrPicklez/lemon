@@ -26,7 +26,7 @@ public:
     void gotMessage(ofMessage msg);
 
     vector <ofxAssimpModelLoader> lemons, lemons2, limes;
-    ofFbo fbo, mask;
+    ofFbo fbo, fbo2, mask;
     Kinect kinect;
     ofShader shader;
 

@@ -10,8 +10,9 @@ void ofApp::setup(){
     int xY = ofGetHeight() / nLeaf;
     ofxAssimpModelLoader _model;
     kinect.setup();
-    fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGB);
-    mask.allocate(ofGetWidth(), ofGetHeight(), GL_RGB);
+    fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+    fbo2.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
+    mask.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
 
     _model.loadModel("lemon.obj", false);
 //    _model.loadModel("lemon.obj", false);
@@ -40,11 +41,7 @@ void ofApp::setup(){
             limes.push_back(_model);
         }
     }
-
-
-
     ofSetBackgroundAuto(false);
-
 }
 
 //--------------------------------------------------------------
@@ -72,12 +69,14 @@ void ofApp::update(){
             x ++;
         }
     }
-}
 
-//--------------------------------------------------------------
-void ofApp::draw(){
+    mask.begin();       //  To strech kinect image across width/height
+    ofClear(255, 255, 255, 0);
+    kinect.grayImage.draw(0, 0, ofGetWidth(), ofGetHeight());
+    mask.end();
+
+
     fbo.begin();
-
     ofSetColor(ofColor::aqua);
     for(int i = 0; i < lemons.size(); i++){
         lemons2[i].drawWireframe();
@@ -86,17 +85,43 @@ void ofApp::draw(){
     for(int i = 0; i < lemons.size(); i++){
         lemons[i].drawWireframe();
     }
-
     fbo.end();
 
-    mask.begin();       //  To strech kinect image across width/height
-    kinect.colorImg.draw(0, 0, ofGetWidth(), ofGetHeight());
-    mask.end();
+
+
+    fbo2.begin();
+    ofSetColor(ofColor::yellow);
+    for(int i = 0; i < lemons.size(); i++){
+        lemons[i].drawWireframe();
+    }
+    ofSetColor(ofColor::aqua);
+    for(int i = 0; i < lemons.size(); i++){
+        lemons2[i].drawWireframe();
+    }
+    ofPopStyle();
+    fbo2.end();
+
+}
+
+//--------------------------------------------------------------
+void ofApp::draw(){
 
     ofTexture tex = fbo.getTexture();
-    tex.setAlphaMask(mask.getTextureReference());                    //DO THIS IN SHADER FOR FUCK SAKE!
+    ofTexture tex2 = fbo2.getTexture();
 
+    //ofPushStyle();
+    //ofSetColor(ofColor::aquamarine);
+    //ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());       //GET AN OFFSET OF LEMONS
+    //ofPopStyle();
+    ofTexture _mask = mask.getTexture();
+    _mask.setSwizzle(GL_TEXTURE_SWIZZLE_A, GL_RED);
+    ofDisableSmoothing();
+    tex2.draw(0, 0, ofGetWidth(), ofGetHeight());
+    tex.setAlphaMask(_mask);                    //DO THIS IN SHADER FOR FUCK SAKE!
     tex.draw(0, 0, ofGetWidth(), ofGetHeight());
+    _mask.draw(0, 0, ofGetWidth(), ofGetHeight());
+
+
 
 }
 

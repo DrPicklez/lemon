@@ -9,6 +9,7 @@ void Kinect::setup(){
     grayImage.allocate(kinect.width, kinect.height);
     grayThreshNear.allocate(kinect.width, kinect.height);
     grayThreshFar.allocate(kinect.width, kinect.height);
+    //grayImage.contrastStretch();
     nearThreshold = 250;
     farThreshold = 150;
     ofSetFrameRate(60);
@@ -21,19 +22,12 @@ void Kinect::update(){
     kinect.update();
     if(kinect.isFrameNew()) {
         grayImage.setFromPixels(kinect.getDepthPixels());
-
-        // we do two thresholds - one for the far plane and one for the near plane
-        // we then do a cvAnd to get the pixels which are a union of the two thresholds
         grayThreshNear = grayImage;
         grayThreshFar = grayImage;
         grayThreshNear.threshold(nearThreshold, true);
         grayThreshFar.threshold(farThreshold);
-        //cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
-        cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), colorImg.getCvImage(), NULL);
+        cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
         grayImage.flagImageChanged();
-        //grayImage.blurGaussian(3);
-        //grayImage.invert();
-        colorImg = grayImage;
 
     }
 }

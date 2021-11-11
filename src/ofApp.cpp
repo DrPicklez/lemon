@@ -14,6 +14,7 @@ void ofApp::setup(){
     fbo2.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
     mask.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
 
+
     _model.loadModel("lemon.obj", false);
 //    _model.loadModel("lemon.obj", false);
     shader.load("shaders_gl3/mirror");
@@ -41,7 +42,7 @@ void ofApp::setup(){
             limes.push_back(_model);
         }
     }
-    ofSetBackgroundAuto(false);
+    //ofSetBackgroundAuto(false);
 }
 
 //--------------------------------------------------------------
@@ -71,7 +72,6 @@ void ofApp::update(){
     }
 
     mask.begin();       //  To strech kinect image across width/height
-    ofClear(255, 255, 255, 0);
     kinect.grayImage.draw(0, 0, ofGetWidth(), ofGetHeight());
     mask.end();
 
@@ -106,8 +106,8 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-    ofTexture tex = fbo.getTexture();
-    ofTexture tex2 = fbo2.getTexture();
+    ofTexture tex2 = fbo.getTexture();
+    ofTexture tex = fbo2.getTexture();
 
     //ofPushStyle();
     //ofSetColor(ofColor::aquamarine);
@@ -116,13 +116,10 @@ void ofApp::draw(){
     ofTexture _mask = mask.getTexture();
     _mask.setSwizzle(GL_TEXTURE_SWIZZLE_A, GL_RED);
     ofDisableSmoothing();
+
     tex2.draw(0, 0, ofGetWidth(), ofGetHeight());
     tex.setAlphaMask(_mask);                    //DO THIS IN SHADER FOR FUCK SAKE!
     tex.draw(0, 0, ofGetWidth(), ofGetHeight());
-    _mask.draw(0, 0, ofGetWidth(), ofGetHeight());
-
-
-
 }
 
 //--------------------------------------------------------------

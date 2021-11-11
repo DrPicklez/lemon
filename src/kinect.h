@@ -17,7 +17,6 @@ public:
     ofxCvGrayscaleImage grayImage;
     ofxCvGrayscaleImage grayThreshNear;
     ofxCvGrayscaleImage grayThreshFar;
-    ofxCvContourFinder contourFinder;
 
     int nearThreshold;
     int farThreshold;

@@ -10,18 +10,18 @@ void Kinect::setup(){
     grayThreshNear.allocate(kinect.width, kinect.height);
     grayThreshFar.allocate(kinect.width, kinect.height);
     mult.allocate(kinect.width, kinect.height);
-    nearThreshold = 250;
-    farThreshold = 150;
+    nearThreshold = 220;
+    farThreshold = 130;
     ofSetFrameRate(60);
     angle = 0;
     kinect.setCameraTiltAngle(90);
     mult.set(0.5);
+
 }
 //--------------------------------------------------------------
 vector <ofxCvGrayscaleImage> buffer;
 
 void Kinect::update(){
-
     kinect.update();
     if(kinect.isFrameNew()) {
         grayImage.setFromPixels(kinect.getDepthPixels());
@@ -32,4 +32,6 @@ void Kinect::update(){
         cvAnd(grayThreshNear.getCvImage(), grayThreshFar.getCvImage(), grayImage.getCvImage(), NULL);
         grayImage.flagImageChanged();
     }
+    notConnected = !kinect.isConnected();
 }
+

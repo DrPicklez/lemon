@@ -23,6 +23,7 @@ public:
     int farThreshold;
     bool bThreshWithOpenCV;
     int angle;
+    bool notConnected;
 };
 
 #endif // KINECT_H

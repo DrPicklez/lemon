@@ -17,6 +17,7 @@ public:
     ofxCvGrayscaleImage grayImage;
     ofxCvGrayscaleImage grayThreshNear;
     ofxCvGrayscaleImage grayThreshFar;
+    ofxCvGrayscaleImage greyAv, mult;
 
     int nearThreshold;
     int farThreshold;

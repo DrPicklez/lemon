@@ -42,7 +42,7 @@ void ofApp::setup(){
             limes.push_back(_model);
         }
     }
-    //ofSetBackgroundAuto(false);
+    ofSetBackgroundAuto(false);
 }
 
 //--------------------------------------------------------------
@@ -72,29 +72,35 @@ void ofApp::update(){
     }
 
     mask.begin();       //  To strech kinect image across width/height
-    kinect.grayImage.draw(0, 0, ofGetWidth(), ofGetHeight());
+    ofPixels _pix = kinect.grayImage.getPixels();
+    _pix.resize(mask.getWidth(), mask.getHeight(), OF_INTERPOLATE_NEAREST_NEIGHBOR);
+    ofImage _image;
+    _image.setFromPixels(_pix);
+    _image.draw(0, 0, mask.getWidth(), mask.getHeight());
     mask.end();
 
 
     fbo.begin();
-    ofSetColor(ofColor::aqua);
-    for(int i = 0; i < lemons.size(); i++){
-        lemons2[i].drawWireframe();
-    }
-    ofSetColor(ofColor::yellow);
-    for(int i = 0; i < lemons.size(); i++){
-        lemons[i].drawWireframe();
+    if(ofGetFrameNum() < 150){
+        ofSetColor(ofColor::antiqueWhite);
+        for(int i = 0; i < lemons.size(); i++){
+            lemons[i].drawWireframe();
+        }
+        ofSetColor(ofColor::yellow);
+        for(int i = 0; i < lemons.size(); i++){
+            lemons2[i].drawWireframe();
+        }
     }
     fbo.end();
 
 
 
     fbo2.begin();
-    ofSetColor(ofColor::yellow);
+    ofSetColor(ofColor::aqua);
     for(int i = 0; i < lemons.size(); i++){
         lemons[i].drawWireframe();
     }
-    ofSetColor(ofColor::aqua);
+    ofSetColor(ofColor::yellow);
     for(int i = 0; i < lemons.size(); i++){
         lemons2[i].drawWireframe();
     }
@@ -116,6 +122,7 @@ void ofApp::draw(){
     ofTexture _mask = mask.getTexture();
     _mask.setSwizzle(GL_TEXTURE_SWIZZLE_A, GL_RED);
     ofDisableSmoothing();
+
 
     tex2.draw(0, 0, ofGetWidth(), ofGetHeight());
     tex.setAlphaMask(_mask);                    //DO THIS IN SHADER FOR FUCK SAKE!

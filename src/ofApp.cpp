@@ -43,6 +43,7 @@ void ofApp::setup(){
         }
     }
     ofSetBackgroundAuto(false);
+
 }
 
 //--------------------------------------------------------------
@@ -62,11 +63,6 @@ void ofApp::update(){
             if(x < limes.size()){
                 limes[x].setRotation(1,rider + ((j+1) * (i+1) * 20), ofNoise(i + tang + 50), ofNoise(j + tang), ofNoise(i + tang+ 70));
             }
-
-//            tang = rider * 0.01;
-            //limes[x].setPosition(ofNoise(i + tang + 50) * xX, ofNoise(j + tang) * xY, ofNoise(i + tang + 70));
-//            lemons[x].setRotation(1, rider + ((j+3) * (i+ 5) * 20), ofNoise(j + tang), ofNoise(i + tang + 3), ofNoise(j + tang + 4));
-//            lemons2[x].setRotation(1, rider + ((j * i * 50)), ofNoise(i + tang + 7), ofNoise(j + tang + 2), ofNoise(i + tang + 10));
             x ++;
         }
     }
@@ -76,6 +72,7 @@ void ofApp::update(){
     _pix.resize(mask.getWidth(), mask.getHeight(), OF_INTERPOLATE_NEAREST_NEIGHBOR);
     ofImage _image;
     _image.setFromPixels(_pix);
+    _image.mirror(0, 1);
     _image.draw(0, 0, mask.getWidth(), mask.getHeight());
     mask.end();
 
@@ -92,7 +89,6 @@ void ofApp::update(){
         }
     }
     fbo.end();
-
 
 
     fbo2.begin();
@@ -119,7 +115,9 @@ void ofApp::draw(){
     _mask.setSwizzle(GL_TEXTURE_SWIZZLE_A, GL_RED);
     ofDisableSmoothing();
 
+
     tex2.draw(0, 0, ofGetWidth(), ofGetHeight());
+
     tex.setAlphaMask(_mask);                    //DO THIS IN SHADER FOR FUCK SAKE!
     tex.draw(0, 0, ofGetWidth(), ofGetHeight());
 }

@@ -14,7 +14,7 @@ void Kinect::setup(){
     farThreshold = 130;
     ofSetFrameRate(60);
     angle = 0;
-    kinect.setCameraTiltAngle(90);
+    //kinect.setCameraTiltAngle(90);
     mult.set(0.5);
 
 }

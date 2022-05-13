@@ -36,13 +36,13 @@ void ofApp::setup(){
         }
     }
 
-    for(int i = 0; i < nLeaf; i ++){
-        for(int j= 0; j < nLeaf; j ++){
-            _model.setScale(0.05, 0.05, 0.05);
-            _model.setPosition((xX * i) + (xX * 0.5),(xY * j) + (xY * 0.5), 0);
-            limes.push_back(_model);
-        }
-    }
+    //for(int i = 0; i < nLeaf; i ++){
+    //    for(int j= 0; j < nLeaf; j ++){
+    //        _model.setScale(0.05, 0.05, 0.05);
+    //        _model.setPosition((xX * i) + (xX * 0.5),(xY * j) + (xY * 0.5), 0);
+    //        limes.push_back(_model);
+    //    }
+    //}
     ofSetBackgroundAuto(false);
 
 }
@@ -78,33 +78,44 @@ void ofApp::update(){
     mask.end();
 
 
-    fbo.begin();
     if((ofGetFrameNum() < 150) || (kinect.notConnected)){
+        fbo.begin();
         ofSetColor(ofColor::aqua);
+        ofPushStyle();
+        ofSetLineWidth(5);
         for(int i = 0; i < lemons.size(); i++){
             lemons[i].drawWireframe();
         }
+        ofPopStyle();
+
+        ofPushStyle();
+        ofSetLineWidth(3);
         ofSetColor(ofColor::yellow);
         for(int i = 0; i < lemons.size(); i++){
             lemons2[i].drawWireframe();
         }
+        ofPopStyle();
         init = !init;
+        fbo.end();
     }
-    fbo.end();
-
-
-    fbo2.begin();
-    ofSetColor(ofColor::aqua);
-    for(int i = 0; i < lemons.size(); i++){
-        lemons[i].drawWireframe();
+    else{
+        fbo2.begin();
+        ofSetColor(ofColor::aqua);
+        ofPushStyle();
+        ofSetLineWidth(5);
+        for(int i = 0; i < lemons.size(); i++){
+            lemons[i].drawWireframe();
+        }
+        ofPopStyle();
+        ofPushStyle();
+        ofSetLineWidth(3);
+        ofSetColor(ofColor::yellow);
+        for(int i = 0; i < lemons.size(); i++){
+            lemons2[i].drawWireframe();
+        }
+        ofPopStyle();
+        fbo2.end();
     }
-    ofSetColor(ofColor::yellow);
-    for(int i = 0; i < lemons.size(); i++){
-        lemons2[i].drawWireframe();
-    }
-    ofPopStyle();
-    fbo2.end();
-
 }
 
 //--------------------------------------------------------------
@@ -120,8 +131,14 @@ void ofApp::draw(){
         tex2.draw(0, 0, ofGetWidth(), ofGetHeight());
     }
 
+    ofPushStyle();
     tex.setAlphaMask(_mask);                    //DO THIS IN SHADER FOR FUCK SAKE!
+//    ofSetColor(255, 255, 255, 45);
     tex.draw(0, 0, ofGetWidth(), ofGetHeight());
+//     ofSetColor(255, 255, 255, 240);
+    tex.draw(0, 0, ofGetWidth(), ofGetHeight());
+    ofPopStyle();
+
 }
 
 //--------------------------------------------------------------

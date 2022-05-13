@@ -15,6 +15,7 @@ void ofApp::setup(){
     mask.allocate(ofGetWidth(), ofGetHeight(), GL_RGBA);
 
 
+
     _model.loadModel("lemon.obj", false);
 //    _model.loadModel("lemon.obj", false);
     shader.load("shaders_gl3/mirror");
@@ -23,7 +24,7 @@ void ofApp::setup(){
         for(int j= 0; j < nModels; j ++){
             _model.setScale(0.2, 0.2, 0.2);
             _model.setPosition((nX * i) + (nX * 0.5),(nY * j) + (nY * 0.5), 0);
-            lemons.push_back(_model);
+            lemons.push_back(_model);       //bang model in shader FFS
         }
     }
 
@@ -47,7 +48,7 @@ void ofApp::setup(){
 }
 
 //--------------------------------------------------------------
-
+bool init = true;
 void ofApp::update(){
     kinect.update();
     float rider = ofGetElapsedTimeMillis() * 0.09;
@@ -87,6 +88,7 @@ void ofApp::update(){
         for(int i = 0; i < lemons.size(); i++){
             lemons2[i].drawWireframe();
         }
+        init = !init;
     }
     fbo.end();
 
@@ -113,10 +115,10 @@ void ofApp::draw(){
 
     ofTexture _mask = mask.getTexture();
     _mask.setSwizzle(GL_TEXTURE_SWIZZLE_A, GL_RED);
-    ofDisableSmoothing();
-
-
-    tex2.draw(0, 0, ofGetWidth(), ofGetHeight());
+//    ofDisableSmoothing();
+    if(!init){
+        tex2.draw(0, 0, ofGetWidth(), ofGetHeight());
+    }
 
     tex.setAlphaMask(_mask);                    //DO THIS IN SHADER FOR FUCK SAKE!
     tex.draw(0, 0, ofGetWidth(), ofGetHeight());
